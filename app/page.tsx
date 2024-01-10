@@ -1,113 +1,313 @@
-import Image from 'next/image'
+"use client"
+import '@radix-ui/themes/styles.css';
+import {toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
+import axios from 'axios';
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+export default function Home(){
+
+  const [url, setUrl] = useState("");
+  const [password, setPassword] = useState("");
+  const [slug, setSlug] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/api/create", { originalUrl: url, password, shortCode: slug });
+      const data = res.data;
+      if (data.error) {
+        setError(data.error);
+        toast.error(data.error);
+      } else {
+        toast.success("Short URL created successfully");
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+        toast.error(error.message);
+      } else {
+        setError('An unexpected error occurred.');
+        toast.error('An unexpected error occurred.');
+      }
+    }
+  }
+
+  return(
+    <>
+    <ToastContainer />
+<section className="bg-gray-1 py-20 dark:bg-dark lg:py-[120px]">
+  <div className="container mx-auto">
+    <div className="-mx-4 flex flex-wrap">
+      <div className="w-full px-4">
+        <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-gray-1 px-10 py-16 text-center dark:bg-dark-2 sm:px-12 md:px-[60px]">
+          <div className="mb-10 text-center md:mb-16">
+            <a
+              href="javascript:void(0)"
+              className="mx-auto inline-block max-w-[160px]"
+            >
+              <img src="https://noobsverse-internal.s3.ap-south-1.amazonaws.com/assets/logos/nvai/Noobsverse.png" alt="logo" />
+            </a>
+            <p>{error}</p>
+          </div>
+          <form>
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Your long URL"
+                className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:text-white"
+                onChange={(e) => setUrl(e.target.value)}
+              />
+            </div>
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Your Slug"
+                className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:text-white"
+                onChange={(e) => setSlug(e.target.value)}
+              />
+            </div>
+            <div className="mb-6">
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:text-white"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="mb-10">
+              <input
+                type="submit"
+                defaultValue="Generate Short URL"
+                className="w-full cursor-pointer rounded-md border border-primary bg-primary px-5 py-3 text-base font-medium text-white transition hover:bg-opacity-90"
+                onClick={(e)=>handleSubmit(e)}
+              />
+            </div>
+          </form>
+          <div>
+            <span className="absolute right-1 top-1">
+              <svg
+                width={40}
+                height={40}
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="1.39737"
+                  cy="38.6026"
+                  r="1.39737"
+                  transform="rotate(-90 1.39737 38.6026)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="1.39737"
+                  cy="1.99122"
+                  r="1.39737"
+                  transform="rotate(-90 1.39737 1.99122)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="13.6943"
+                  cy="38.6026"
+                  r="1.39737"
+                  transform="rotate(-90 13.6943 38.6026)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="13.6943"
+                  cy="1.99122"
+                  r="1.39737"
+                  transform="rotate(-90 13.6943 1.99122)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="25.9911"
+                  cy="38.6026"
+                  r="1.39737"
+                  transform="rotate(-90 25.9911 38.6026)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="25.9911"
+                  cy="1.99122"
+                  r="1.39737"
+                  transform="rotate(-90 25.9911 1.99122)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="38.288"
+                  cy="38.6026"
+                  r="1.39737"
+                  transform="rotate(-90 38.288 38.6026)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="38.288"
+                  cy="1.99122"
+                  r="1.39737"
+                  transform="rotate(-90 38.288 1.99122)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="1.39737"
+                  cy="26.3057"
+                  r="1.39737"
+                  transform="rotate(-90 1.39737 26.3057)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="13.6943"
+                  cy="26.3057"
+                  r="1.39737"
+                  transform="rotate(-90 13.6943 26.3057)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="25.9911"
+                  cy="26.3057"
+                  r="1.39737"
+                  transform="rotate(-90 25.9911 26.3057)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="38.288"
+                  cy="26.3057"
+                  r="1.39737"
+                  transform="rotate(-90 38.288 26.3057)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="1.39737"
+                  cy="14.0086"
+                  r="1.39737"
+                  transform="rotate(-90 1.39737 14.0086)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="13.6943"
+                  cy="14.0086"
+                  r="1.39737"
+                  transform="rotate(-90 13.6943 14.0086)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="25.9911"
+                  cy="14.0086"
+                  r="1.39737"
+                  transform="rotate(-90 25.9911 14.0086)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="38.288"
+                  cy="14.0086"
+                  r="1.39737"
+                  transform="rotate(-90 38.288 14.0086)"
+                  fill="#3056D3"
+                />
+              </svg>
+            </span>
+            <span className="absolute bottom-1 left-1">
+              <svg
+                width={29}
+                height={40}
+                viewBox="0 0 29 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="2.288"
+                  cy="25.9912"
+                  r="1.39737"
+                  transform="rotate(-90 2.288 25.9912)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="14.5849"
+                  cy="25.9911"
+                  r="1.39737"
+                  transform="rotate(-90 14.5849 25.9911)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="26.7216"
+                  cy="25.9911"
+                  r="1.39737"
+                  transform="rotate(-90 26.7216 25.9911)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="2.288"
+                  cy="13.6944"
+                  r="1.39737"
+                  transform="rotate(-90 2.288 13.6944)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="14.5849"
+                  cy="13.6943"
+                  r="1.39737"
+                  transform="rotate(-90 14.5849 13.6943)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="26.7216"
+                  cy="13.6943"
+                  r="1.39737"
+                  transform="rotate(-90 26.7216 13.6943)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="2.288"
+                  cy="38.0087"
+                  r="1.39737"
+                  transform="rotate(-90 2.288 38.0087)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="2.288"
+                  cy="1.39739"
+                  r="1.39737"
+                  transform="rotate(-90 2.288 1.39739)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="14.5849"
+                  cy="38.0089"
+                  r="1.39737"
+                  transform="rotate(-90 14.5849 38.0089)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="26.7216"
+                  cy="38.0089"
+                  r="1.39737"
+                  transform="rotate(-90 26.7216 38.0089)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="14.5849"
+                  cy="1.39761"
+                  r="1.39737"
+                  transform="rotate(-90 14.5849 1.39761)"
+                  fill="#3056D3"
+                />
+                <circle
+                  cx="26.7216"
+                  cy="1.39761"
+                  r="1.39737"
+                  transform="rotate(-90 26.7216 1.39761)"
+                  fill="#3056D3"
+                />
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
+  </div>
+</section>
+</>
   )
 }

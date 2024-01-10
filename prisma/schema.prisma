@@ -17,7 +17,4 @@ model ShortenedUrl {
   title        String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  // Optional: additional fields like access counts, expiration date, etc.
-  // accessCount Int      @default(0)
-  // expiresAt   DateTime? // Nullable for URLs that do not expire
 }
