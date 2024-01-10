@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ShortenedUrl {
+  id           Int      @id @default(autoincrement())
+  originalUrl  String   @db.VarChar(2048)
+  shortCode    String   @unique
+  title        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  // Optional: additional fields like access counts, expiration date, etc.
+  // accessCount Int      @default(0)
+  // expiresAt   DateTime? // Nullable for URLs that do not expire
+}
